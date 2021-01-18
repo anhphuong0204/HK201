@@ -1,0 +1,1 @@
+Program([VarDecl(Id(a),IntLiteral(3)),VarDecl(Id(b),IntLiteral(5)),FuncDecl(Id(fooleanse)[],([][Assign(Id(a),BinaryOp(%,FloatLiteral(6),Id(b)))]))])
