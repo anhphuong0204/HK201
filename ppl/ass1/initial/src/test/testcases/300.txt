@@ -1,0 +1,8 @@
+Function: fact
+        Parameter: n
+        Body:
+            For (n = 1, n >= 10, 1) Do
+                writeln(n);
+                Continue;
+            EndFor.
+        EndBody.

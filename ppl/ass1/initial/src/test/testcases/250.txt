@@ -1,0 +1,11 @@
+Function: fact
+        Parameter: n
+        Body:
+        For (n = 1, n < 10, 1) Do
+            Var: v;
+            v = n;
+            n = n + 1;
+            v = 10 + 5 * 12;
+            k = "abc";
+        EndFor.
+        EndBody.

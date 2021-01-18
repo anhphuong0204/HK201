@@ -1,0 +1,11 @@
+Function: fact
+        Parameter: n
+        Body:
+            While n == 10 Do
+                If n == 11 Then 
+                    writeln(n);
+                Else
+                    write(n);
+                EndIf.
+            EndWhile.
+        EndBody.

@@ -1,0 +1,14 @@
+Function: fact
+        Parameter: n
+        Body:
+            For (n = 1, n < 10, 1) Do
+                If n == v + 1 Then 
+                    If True Then 
+                        Return v;
+                        Continue;
+                    Else 
+                        Return n + 100 \ 10 + 1;
+                    EndIf.
+                EndIf.
+            EndFor.
+        EndBody.

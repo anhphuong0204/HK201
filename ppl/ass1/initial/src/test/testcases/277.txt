@@ -1,0 +1,9 @@
+Function: fact
+        Parameter: n
+        Body:
+            If n == 0 Then
+                Continue;
+            Else
+                Return n + 10;
+            EndIf.
+        EndBody.

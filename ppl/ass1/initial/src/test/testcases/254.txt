@@ -1,0 +1,7 @@
+Function: fact
+        Parameter: n
+        Body:
+        While n == 10 Do
+            n = n + 10;
+        EndWhile.
+        EndBody.

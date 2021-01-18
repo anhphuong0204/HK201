@@ -1,0 +1,10 @@
+Function: fact
+        Parameter: n
+        Body:
+            For (n = 1, n <= 10, 1) Do
+                If n == 11 Then 
+                    n = 10 + 5 * 12;
+                    Return n;
+                EndIf.
+            EndFor.
+        EndBody.
