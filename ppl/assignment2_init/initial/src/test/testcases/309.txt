@@ -1,0 +1,9 @@
+Function: f
+                    Body:
+                        If n == 0 Then
+                            Return 1;
+                        ElseIf n > 6 Then
+                            Break;
+                        EndIf.
+                    EndBody.
+                    

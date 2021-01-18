@@ -1,0 +1,1 @@
+Program([VarDecl(Id(x),StringLiteral(abc)),VarDecl(Id(y),BooleanLiteral(true))])

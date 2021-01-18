@@ -1,0 +1,20 @@
+
+                Function: main
+                Parameter: n
+                Body:
+                    While n > 3 Do
+                        n = n + 1;
+                        Continue;
+                        Break;
+                    EndWhile.
+
+                    Do n = n * 8 - 7;
+                    While n * 6 < 9
+                    EndDo.
+
+                    For (i = 1, i < i + 1, i < 8) Do
+                        Var: k;
+                        k = k + 1;
+                    EndFor.
+                EndBody.
+        

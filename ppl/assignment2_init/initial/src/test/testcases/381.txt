@@ -1,0 +1,12 @@
+
+                Function: kak
+                Parameter: n, k10n_123
+                Body:
+                    Var: j = 10, a[1][0] = {{1,2}, {2,3}};
+                    k = "abc" + "def";
+                    print(k);
+                    Return "abc";
+                    a[1 + 3][k + 9 + j] = 6;
+                    **cmt**
+                EndBody.
+        

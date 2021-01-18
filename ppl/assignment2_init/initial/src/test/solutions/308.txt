@@ -1,0 +1,1 @@
+Program([VarDecl(Id(x),IntLiteral(5)),FuncDecl(Id(ma)[Id(n),Id(k),Id(ff)],([VarDecl(Id(x),IntLiteral(5))][Assign(Id(x),IntLiteral(10))]))])

@@ -1,0 +1,7 @@
+Var:x=5;
+                    Function: ma
+                    Parameter: n, k, ff
+                    Body:
+                    Var:x=5;
+                    x = 10;
+                    EndBody.
