@@ -1,0 +1,12 @@
+Function: fact
+        Parameter: n
+        Body:
+            For (n = 1, n < 10, 1) Do
+                For (m = n, m < 10, 1) Do
+                    writeln(m);
+                    writeln(n);
+                EndFor.
+                If (False) Then Break;
+                EndIf.
+            EndFor.
+        EndBody.

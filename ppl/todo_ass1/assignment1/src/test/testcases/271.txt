@@ -1,0 +1,5 @@
+Function: fact
+        Parameter: n
+        Body:
+            Return;
+        EndBody.

@@ -1,0 +1,1 @@
+Var: x = "this is a string";

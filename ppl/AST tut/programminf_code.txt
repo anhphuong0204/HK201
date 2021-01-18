@@ -1,0 +1,138 @@
+1
+class ASTGeneration(MPVisitor):
+
+    def visitProgram(self,ctx:MPParser.ProgramContext):
+
+        return 1 + self.visit(ctx.vardecls())
+
+    def visitVardecls(self,ctx:MPParser.VardeclsContext):
+
+        return self.visit(ctx.vardecl()) + self.visit(ctx.vardecltail())
+
+    def visitVardecltail(self,ctx:MPParser.VardecltailContext): 
+
+        if ctx.getChildCount() == 0:
+            return 0
+        return self.visit(ctx.vardecl()) + self.visit(ctx.vardecltail())
+
+    def visitVardecl(self,ctx:MPParser.VardeclContext): 
+        return self.visit(ctx.mptype()) + self.visit(ctx.ids()) + 1
+
+    def visitMptype(self,ctx:MPParser.MptypeContext):
+
+        return 1
+
+    def visitIds(self,ctx:MPParser.IdsContext):
+
+        if ctx.getChildCount() == 1:
+            return 1
+        return 2 + self.visit(ctx.ids())
+2
+class ASTGeneration(MPVisitor):
+
+    def visitProgram(self,ctx:MPParser.ProgramContext):
+
+        return 1 + self.visit(ctx.vardecls())
+
+    def visitVardecls(self,ctx:MPParser.VardeclsContext):
+
+        return 1 + self.visit(ctx.vardecl()) + self.visit(ctx.vardecltail())
+
+    def visitVardecltail(self,ctx:MPParser.VardecltailContext): 
+
+        if ctx.getChildCount() == 0:
+            return 1
+        return 1 + self.visit(ctx.vardecl()) + self.visit(ctx.vardecltail())
+
+    def visitVardecl(self,ctx:MPParser.VardeclContext): 
+        return 1 + self.visit(ctx.mptype()) + self.visit(ctx.ids())
+
+    def visitMptype(self,ctx:MPParser.MptypeContext):
+
+        return 1
+
+    def visitIds(self,ctx:MPParser.IdsContext):
+
+        if ctx.getChildCount() == 1:
+            return 1
+        return 1 + self.visit(ctx.ids())
+3
+class ASTGeneration(MPVisitor):
+    def visitProgram(self,ctx:MPParser.ProgramContext):
+
+        return Program(ctx.vardecls().accept(self))
+
+    def visitVardecls(self,ctx:MPParser.VardeclsContext):
+
+        return self.visit(ctx.vardecl()) + self.visit(ctx.vardecltail())
+
+    def visitVardecltail(self,ctx:MPParser.VardecltailContext): 
+
+        if ctx.getChildCount() == 0:
+            return []
+        else:
+            return self.visit(ctx.vardecl()) + self.visit(ctx.vardecltail())
+
+    def visitVardecl(self,ctx:MPParser.VardeclContext): 
+
+        type = ctx.mptype().accept(self)
+        ids = ctx.ids().accept(self)
+        return list(map(lambda x: VarDecl(x,type), ids))
+        
+    def visitMptype(self,ctx:MPParser.MptypeContext):
+
+        if ctx.INTTYPE():
+            return IntType()
+        return FloatType()
+
+    def visitIds(self,ctx:MPParser.IdsContext):
+
+        if ctx.getChildCount() == 1:
+            return [Id(ctx.ID().getText())]
+        return [Id(ctx.ID().getText())] + ctx.ids().accept(self)
+6
+from functools import reduce
+class ASTGeneration(MPVisitor):
+    def visitProgram(self,ctx:MPParser.ProgramContext):
+        return self.visit(ctx.exp())
+        
+    def visitExp(self,ctx:MPParser.ExpContext):
+    #exp: (term ASSIGN)* term;
+        if ctx.ASSIGN():
+            assignLst = [i.getText() for i in ctx.ASSIGN()]
+            assignLst.reverse()
+            a = lambda x,y: Binary(assignLst[termLst.index(y)-1], y, x)
+            termLst = [self.visit(i) for i in ctx.term()]
+            termLst.reverse()
+            return reduce(a, termLst)
+        return self.visit(ctx.term(0))
+
+    def visitTerm(self,ctx:MPParser.TermContext): 
+    #term: factor COMPARE factor | factor;
+        if ctx.COMPARE():
+            a = self.visit(ctx.factor(0))
+            b = self.visit(ctx.factor(1))
+            return Binary(ctx.COMPARE().getText(), a, b)
+        return self.visit(ctx.factor(0))
+
+    def visitFactor(self,ctx:MPParser.FactorContext):
+    #factor: operand (ANDOR operand)*;
+        if ctx.ANDOR():
+            operandLst = [self.visit(i) for i in ctx.operand()]
+            #operandLst.reverse()
+            a = lambda x,y: Binary(andOrLst[operandLst.index(y)-1], x, y)
+            andOrLst = [i.getText() for i in ctx.ANDOR()]
+            #andOrLst.reverse()
+            return reduce(a , operandLst)
+        return self.visit(ctx.operand(0))
+
+    def visitOperand(self,ctx:MPParser.OperandContext):
+    #operand: ID | INTLIT | BOOLIT | '(' exp ')';
+    #class Id(Expr):
+        if ctx.ID():
+            return Id(ctx.ID().getText())
+        if ctx.INTLIT():
+            return IntLiteral(ctx.INTLIT().getText())
+        if ctx.BOOLIT():
+            return BooleanLiteral(ctx.BOOLIT().getText())
+        return self.visit(ctx.exp())

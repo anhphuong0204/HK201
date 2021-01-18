@@ -1,0 +1,45 @@
+from functools import reduce
+class ASTGeneration(BKITVisitor):
+    def visitProgram(self,ctx:BKITParser.ProgramContext):
+        return self.visit(ctx.exp())
+        
+    def visitExp(self,ctx:BKITParser.ExpContext):
+    #exp: (term ASSIGN)* term;
+        if ctx.ASSIGN():
+            assignLst = [i.getText() for i in ctx.ASSIGN()]
+            assignLst.reverse()
+            a = lambda x,y: Binary(assignLst[termLst.index(y)-1], y, x)
+            termLst = [self.visit(i) for i in ctx.term()]
+            termLst.reverse()
+            return reduce(a, termLst)
+        return self.visit(ctx.term(0))
+
+    def visitTerm(self,ctx:BKITParser.TermContext): 
+    #term: factor COMPARE factor | factor;
+        if ctx.COMPARE():
+            a = self.visit(ctx.factor(0))
+            b = self.visit(ctx.factor(1))
+            return Binary(ctx.COMPARE().getText(), a, b)
+        return self.visit(ctx.factor(0))
+
+    def visitFactor(self,ctx:BKITParser.FactorContext):
+    #factor: operand (ANDOR operand)*;
+        if ctx.ANDOR():
+            operandLst = [self.visit(i) for i in ctx.operand()]
+            #operandLst.reverse()
+            a = lambda x,y: Binary(andOrLst[operandLst.index(y)-1], x, y)
+            andOrLst = [i.getText() for i in ctx.ANDOR()]
+            #andOrLst.reverse()
+            return reduce(a , operandLst)
+        return self.visit(ctx.operand(0))
+
+    def visitOperand(self,ctx:BKITParser.OperandContext):
+    #operand: ID | INTLIT | BOOLIT | '(' exp ')';
+    #class Id(Expr):
+        if ctx.ID():
+            return Id(ctx.ID().getText())
+        if ctx.INTLIT():
+            return IntLiteral(ctx.INTLIT().getText())
+        if ctx.BOOLIT():
+            return BooleanLiteral(ctx.BOOLIT().getText())
+        return self.visit(ctx.exp())

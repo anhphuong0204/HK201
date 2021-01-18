@@ -1,0 +1,9 @@
+Function: fact
+        Parameter: n
+        Body:
+        While False Do
+            n = n + 10;
+            Var: v = 9;
+            n = n + v;
+        EndWhile.
+        EndBody.

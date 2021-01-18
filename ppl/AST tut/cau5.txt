@@ -1,0 +1,17 @@
+from functools import reduce
+class ASTGeneration(MPVisitor):
+    def visitProgram(self,ctx:MPParser.ProgramContext):
+        return Program(reduce(lambda x,y:x+self.visitVardecl(y),ctx.vardecl(),[]))
+        
+    def visitVardecl(self,ctx:MPParser.VardeclContext):
+        typ = self.visitMptype(ctx.mptype())
+        list_id = self.visitIds(ctx.ids())
+        return [VarDecl(id_,typ) for id_ in list_id] # return the list of VarDecl
+  	
+    def visitMptype(self,ctx:MPParser.MptypeContext):
+        return IntType() if ctx.INTTYPE() else FloatType()
+
+    def visitIds(self,ctx:MPParser.IdsContext):
+        i = ctx.getChildCount()
+        i = i - int(i/2)
+        return [Id(str(ctx.ID(j))) for j in range(i)]

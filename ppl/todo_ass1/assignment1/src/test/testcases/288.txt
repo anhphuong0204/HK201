@@ -1,0 +1,11 @@
+Function: fact
+        Parameter: n
+        Body:
+            While n == 10 Do
+                If n == 11 Then 
+                    Var: k = 10;
+                Else
+                    Return n + 0x123;
+                EndIf.
+            EndWhile.
+        EndBody.

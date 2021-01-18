@@ -1,0 +1,123 @@
+
+class StaticCheck(Visitor):
+
+    def visitProgram(self,ctx:Program,o):
+        arr = {}
+        for x in ctx.decl:
+            self.visit(x, arr)
+        for x in ctx.stmts:
+            self.visit(x, arr)
+
+    def visitVarDecl(self,ctx:VarDecl,o):
+        o[ctx.name] = None
+
+    def visitAssign(self,ctx:Assign,o):
+        rhs = self.visit(ctx.rhs, o)
+        lhs = self.visit(ctx.lhs, o)
+        
+        if (lhs[1] == rhs[1]) and (lhs[1] != None):
+            return ctx
+        elif (lhs[1] == rhs[1]) and (lhs[1] == None):
+            raise TypeCannotBeInferred(ctx)
+        elif (lhs[1] == None) and (rhs[1] != None):
+            o[lhs[0]] = rhs[1]
+            return ctx
+        elif (rhs[1] == None) and (lhs[1] != None):
+            o[rhs[0]] = lhs[1]
+            return ctx
+        raise TypeMismatchInStatement(ctx)
+
+    def visitBinOp(self,ctx:BinOp,o):
+        op = ctx.op
+        e1type = self.visit(ctx.e1, o)
+        e2type = self.visit(ctx.e2, o)
+        if op in ['+' , '-' , '*', '/' ]:
+            if e1type[1] in ['int', None] and e2type[1] in ['int', None]:
+                o[e1type[0]] = 'int'
+                o[e2type[0]] = 'int'
+                return ['', 'int']
+            raise TypeMismatchInExpression(ctx)
+        elif op in ['+.', '-.', '*.', '/.' ]:
+            if e1type[1] in ['float', None] and e2type[1] in ['float', None]:
+                o[e1type[0]] = 'float'
+                o[e2type[0]] = 'float'
+                return ['', 'float']
+            raise TypeMismatchInExpression(ctx)
+        elif op in ['>', '=']:
+            if e1type[1] in ['int', None] and e2type[1] in ['int', None]:
+                o[e1type[0]] = 'int'
+                o[e2type[0]] = 'int'
+                return ['', 'bool']
+            raise TypeMismatchInExpression(ctx)
+        elif op in ['>.', '=.']:
+            if e1type[1] in ['float', None] and e2type[1] in ['float', None]:
+                o[e1type[0]] = 'float'
+                o[e2type[0]] = 'float'
+                return ['', 'bool']
+            raise TypeMismatchInExpression(ctx)
+        elif op in ['&&', '||', '>b', '=b']:
+            if e1type[1] in ['bool', None] and e2type[1] in ['bool', None]:
+                o[e1type[0]] = 'bool'
+                o[e2type[0]] = 'bool'
+                return ['', 'bool']
+            raise TypeMismatchInExpression(ctx)
+        
+
+    def visitUnOp(self,ctx:UnOp,o):
+        op = ctx.op
+        etype = self.visit(ctx.e, o)
+        if op in ['-']:
+            if etype[1] == 'int':
+                return ['', 'int']
+            elif etype[1] == None:
+                o[etype[0]] = 'int'
+                return ['', 'int']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['-.']:
+            if etype[1] == 'float':
+                return ['', 'float']
+            elif etype[1] == None:
+                o[etype[0]] = 'float'
+                return ['', 'float']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['!']:
+            if etype[1] == 'bool':
+                return ['', 'bool']
+            elif etype[1] == None:
+                o[etype[0]] = 'bool'
+                return ['', 'bool']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['i2f']:
+            if etype[1] == 'int':
+                return ['', 'float']
+            elif etype[1] == None:
+                o[etype[0]] = 'int'
+                return ['', 'float']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['floor']:
+            if etype[1] == 'float':
+                return ['', 'int']
+            elif etype[1] == None:
+                o[etype[0]] = 'float'
+                return ['', 'int']
+            else:
+                raise TypeMismatchInExpression(ctx)
+
+    def visitIntLit(self,ctx:IntLit,o):
+        return ['', 'int']
+
+    def visitFloatLit(self,ctx,o):
+        return ['', 'float']
+
+    def visitBoolLit(self,ctx,o):
+        return ['', 'bool']
+
+    def visitId(self,ctx,o):
+        for x in o.keys():
+            if x == ctx.name:
+                return [ctx.name, o[ctx.name]]
+        raise UndeclaredIdentifier(ctx.name)

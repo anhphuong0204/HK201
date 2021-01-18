@@ -1,0 +1,64 @@
+from functools import reduce
+class StaticCheck(Visitor):
+
+    def visitProgram(self,ctx:Program,o):
+        arr = reduce(lambda arr, ele: arr + [self.visit(ele, arr)], ctx.decl, [])
+        self.visit(ctx.exp, arr)
+
+    def visitVarDecl(self,ctx:VarDecl,o):
+        return ctx
+
+    def visitBinOp(self,ctx:BinOp,o):
+        op = ctx.op #string
+        ltype = type(self.visit(ctx.e1, o))
+        rtype = type(self.visit(ctx.e2, o))
+        
+        if op in ['+', '-', '*']:
+            if BoolType in [ltype, rtype]:
+                raise TypeMismatchInExpression(ctx)
+            elif FloatType in [ltype, rtype]:
+                return FloatType()
+            return IntType()
+            
+        elif op == '/':
+            if BoolType in [ltype, rtype]:
+                raise TypeMismatchInExpression(ctx)
+            return FloatType()
+            
+        elif op in ['&&', '||']:
+            if ltype == BoolType and rtype == BoolType:
+                return BoolType()
+            raise TypeMismatchInExpression(ctx)
+            
+        elif op in ['>', '<', '==', '!=']:
+            if ltype == rtype:
+                return BoolType()
+            raise TypeMismatchInExpression(ctx)
+
+    def visitUnOp(self,ctx:UnOp,o):
+        op = ctx.op #string
+        expr = self.visit(ctx.e, o)
+        
+        if op == '!':
+            if type(expr) == BoolType:
+                return BoolType()
+            raise TypeMismatchInExpression(ctx)
+        elif op == '-':
+            if type(expr) == BoolType:
+                raise TypeMismatchInExpression(ctx)
+            return expr
+
+    def visitIntLit(self,ctx:IntLit,o):
+        return IntType()
+
+    def visitFloatLit(self,ctx,o):
+        return FloatType()
+
+    def visitBoolLit(self,ctx,o):
+        return BoolType()
+    
+    def visitId(self,ctx,o):
+        for x in o:
+            if x.name == ctx.name:
+                return x.typ
+        raise UndeclaredIdentifier(ctx.name)

@@ -1,0 +1,116 @@
+class StaticCheck(Visitor):
+
+    def visitProgram(self,ctx:Program,o):
+        arr = [[]]
+        for x in ctx.decl:
+            self.visit(x, arr)
+            
+        for x in ctx.stmts:
+            self.visit(x, arr)
+
+    def visitVarDecl(self,ctx:VarDecl,o):
+        if len(o[0]) != 0:
+            for localDecl in o[0]:
+                if (ctx.name == localDecl[0]):
+                    raise Redeclared(ctx)
+        o[0] += [[ctx.name, None]]
+        
+
+    def visitBlock(self,ctx:Block,o):
+        env = [[]]
+        for x in ctx.decl:
+            self.visit(x, env)
+
+        for x in ctx.stmts:
+            self.visit(x, env + o)
+
+    def visitAssign(self,ctx:Assign,o):
+        #lhs:Id,rhs:Exp
+        id = self.visit(ctx.lhs, o)
+        rhs = self.visit(ctx.rhs, o)
+        if id[1] == None and rhs[1] == None:
+            raise TypeCannotBeInferred(ctx)
+        elif id[1] == None and rhs[1] != None:
+            id[1] = rhs[1]
+        elif id[1] != None and rhs[1] == None:
+            rhs[1] = id[1]
+        elif id[1] != rhs[1]: 
+            raise TypeMismatchInStatement(ctx)
+
+    def visitBinOp(self,ctx:BinOp,o):
+        #op:str,e1:Exp,e2:Exp #op is +,-,*,/,+.,-.,*.,/., &&,||, >, >., >b, =, =., =b
+        op = ctx.op
+        e1 = self.visit(ctx.e1, o)
+        e2 = self.visit(ctx.e2, o)
+        if op in ['+', '-', '*', '/']:
+            if e1[1] == 'int' and e2[1] == 'int':
+                return [None, 'int']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['+.', '-.', '*.', '/.']:
+            if e1[1] == 'float' and e2[1] == 'float':
+                return [None, 'float']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['>', '=']:
+            if e1[1] == 'int' and e2[1] == 'int':
+                return [None, 'bool']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['>.', '=.']:
+            if e1[1] == 'float' and e2[1] == 'float':
+                return [None, 'bool']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['&&', '||', '>b', '=b']:
+            if e1[1] == 'bool' and e2[1] == 'bool':
+                return [None, 'bool']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        
+
+    def visitUnOp(self,ctx:UnOp,o):
+        #op:str,e:Exp #op is -,-., !,i2f, floor
+        op = ctx.op
+        e = self.visit(ctx.e, o)
+        if op in ['-']:
+            if e[1] == 'int':
+                return [None, 'int']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['-.']:
+            if e[1] == 'float':
+                return [None, 'float']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['!']:
+            if e[1] == 'bool':
+                return [None, 'bool']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['i2f']:
+            if e[1] == 'int':
+                return [None, 'float']
+            else:
+                raise TypeMismatchInExpression(ctx)
+        elif op in ['floor']:
+            if e[1] == 'float':
+                return [None, 'int']
+            else:
+                raise TypeMismatchInExpression(ctx)
+
+    def visitIntLit(self,ctx:IntLit,o):
+        return [None, 'int']
+
+    def visitFloatLit(self,ctx,o):
+        return [None, 'float']
+
+    def visitBoolLit(self,ctx,o):
+        return [None, 'bool']
+
+    def visitId(self,ctx,o):
+        for curEnv in o:
+            for decl in curEnv:
+                if ctx.name == decl[0]:
+                    return decl
+        raise UndeclaredIdentifier(ctx.name)

@@ -1,0 +1,10 @@
+Function: fact
+        Parameter: n
+        Body:
+        Do
+            n = n + 10;
+            Var: v, e, m;
+            v = n + m * e - v;
+        While 
+        EndDo.
+        EndBody.

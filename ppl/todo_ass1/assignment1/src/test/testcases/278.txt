@@ -1,0 +1,9 @@
+Function: fact
+        Parameter: n
+        Body:
+            Do
+                n = n + 10;
+                Break;
+            While n < 100
+            EndDo.
+        EndBody.

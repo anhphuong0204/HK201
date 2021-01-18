@@ -1,0 +1,8 @@
+Function: fact
+        Parameter: n, k, d_g
+        Body:
+        For (n = 1, n < 10, 10e3) Do
+            n = n + 1;
+            n = 10 + 5 * 12;
+        EndFor.
+        EndBody.

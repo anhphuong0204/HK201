@@ -1,0 +1,94 @@
+    def visitProgram(self,ctx:BKITParser.ProgramContext):
+        varDeclList = []
+        funcDeclList = []
+        for i in range(ctx.getChildCount()):
+            if ctx.global_varideclare(i) is None:
+                funcDeclList += [self.visit(ctx.function_declare(i))] 
+            else:
+                varDeclList += [self.visit(ctx.global_varideclare(i))]
+
+        return Program(varDeclList + funcDeclList)
+
+    def visitGlobal_varideclare(self,ctx:BKITParser.Global_varideclareContext):
+        #variable : Id
+        #varDimen : List[int] # empty list for scalar variable
+        #varInit  : Literal   # null if no initial
+        varItemList = self.visit(ctx.var_list())
+        declList = []
+        for varItem in varItemList:
+            #varItem: (ID, [#list of int that're dime], initial_value)
+            declList += [VarDecl(varItem[0], varItem[1], varItem[2])]
+        return declList
+
+    def visitVar_list(self,ctx:BKITParser.Var_listContext):
+        varItemList = []
+        i = ctx.getChildCount()
+        i = i - int(i/2) # number of var_item
+        for j in range(i):
+            #varItem = (ID, [#list of integers that are dimensions])
+            varItem = self.visit(ctx.var_item(j))
+            varItemList += [varItem]
+        return varItemList
+
+    def visitVar_item(self,ctx:BKITParser.Var_itemContext):
+        dimeList = []
+        for i in range(ctx.getChildCount()):
+            if ctx.INTEGER(i) is None:
+                break
+            else:
+                dimeList += [ctx.INTEGER(i).getText()]
+        if ctx.initial_value() is None:
+            return (Id(ctx.ID().getText()), dimeList, None)
+        return (Id(ctx.ID().getText()), dimeList, self.visit(ctx.initial_value()))
+
+    def visitInitial_value(self,ctx:BKITParser.Initial_valueContext):
+        if ctx.ID():
+            return Id(ctx.ID().getText())
+        elif ctx.INTEGER():
+            return IntLiteral(ctx.INTEGER().getText())
+        elif ctx.STRING():
+            return StringLiteral(ctx.STRING().getText())
+        elif ctx.BOOLEAN():
+            return BooleanLiteral(ctx.BOOLEAN().getText())
+        elif ctx.FLOAT():
+            return FloatLiteral(ctx.FLOAT().getText())
+        return self.visit(ctx.arraylit())
+    
+    def visitArraylit(self,ctx:BKITParser.ArraylitContext):
+        if ctx.simple_array():
+            return self.visit(ctx.simple_array())
+
+        literalList = []
+        for i in range(ctx.getChildCount()):
+            if ctx.arraylit(i) is None:
+                break
+            literalList += [self.visit(ctx.arraylit(i))]
+        return ArrayLiteral(literalList)
+    
+    def visitSimple_array(self,ctx:BKITParser.Simple_arrayContext):
+        literalList = []
+        if ctx.ID():
+            for i in range(ctx.getChildCount()):
+                if ctx.ID(i) is None:
+                    break
+                literalList += [Id(ctx.ID().getText())]
+        elif ctx.INTEGER():
+            for i in range(ctx.getChildCount()):
+                if ctx.INTEGER(i) is None:
+                    break
+                literalList += [IntegerLiteral(ctx.INTEGER().getText())]
+        elif ctx.STRING():
+            for i in range(ctx.getChildCount()):
+                if ctx.STRING(i) is None:
+                    break
+                literalList += [StringLiteral(ctx.STRING().getText())]
+        elif ctx.BOOLEAN():
+            for i in range(ctx.getChildCount()):
+                if ctx.BOOLEAN(i) is None:
+                    break
+                literalList += [BooleanLiteral(ctx.BOOLEAN().getText())]
+        elif ctx.FLOAT():
+            for i in range(ctx.getChildCount()):
+                if ctx.FLOAT(i) is None:
+                    break
+                literalList += [FloatLiteral(ctx.FLOAT().getText())]

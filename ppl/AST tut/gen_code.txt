@@ -1,0 +1,21 @@
+    #This is for test part, comeback if you stuck somewhere
+    def visitProgram(self,ctx:BKITParser.ProgramContext):
+        #VarDecl(Id(ctx.global_varideclare(0).var_list().var_item(0).ID().getText()),[],None)
+        varDeclList = []
+        funcDeclList = []
+        for i in range(ctx.getChildCount()):
+            if ctx.global_varideclare(i) is None:
+                funcDeclList += [self.visit(ctx.function_declare(i))] 
+            else:
+                varDeclList += [self.visit(ctx.global_varideclare(i))]
+
+        return Program(varDeclList + funcDeclList)
+
+    def visitGlobal_varideclare(self,ctx:BKITParser.Global_varideclareContext):
+        return VarDecl(self.visit(ctx.var_list()), [], None)
+
+    def visitVar_list(self,ctx:BKITParser.Var_listContext):
+        return self.visit(ctx.var_item(0))
+
+    def visitVar_item(self,ctx:BKITParser.Var_itemContext):
+        return Id(ctx.ID().getText())

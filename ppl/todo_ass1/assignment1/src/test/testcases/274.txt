@@ -1,0 +1,6 @@
+Function: fact
+        Parameter: n
+        Body:
+            foo();
+            foo(2 + n, 4 \ n);
+        EndBody.
