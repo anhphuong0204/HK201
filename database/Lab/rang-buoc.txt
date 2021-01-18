@@ -1,0 +1,18 @@
+﻿- Khi đăng kí nhân viên bán hàng trên website thì nhân viên phải hoàn thành 
+một khóa học bán hàng do một công ty nào đó tổ chức.
+- Tuổi của khách hàng phải lớn hơn 18.
+- Khi đăng hình ảnh sản phẩm thì người bán hàng phải thực hiện nghiêm các quy định như:
+không sử dụng hình ảnh liên quan đến các vấn đề chính trị, tôn giáo,
+hình ảnh phản cảm, trái với phong tục Việt Nam, nước ngoài …
+- Người bán hàng phải xuất hóa đơn trong vòng 7 ngày sau khi đơn hàng được 
+giao thành công.
+- Người bán hàng không được tạo tên gian hàng gần giống với tên của Người bán hàng khác
+trên website bán hàng, trừ trường hợp chứng minh được sở hữu đối với tên đó.
+- Các loại sách trên website phải là không thuộc mục hàng hóa bị cấm lưu thông, 
+cấm nhập khẩu, cấm phân phối, danh mục hàng hóa hạn chế theo quy định của pháp luật.
+- Cần đảm bảo nội dung, thông tin trên bao bì, đóng gói trùng khớp với thông tin 
+của sản phầm thực tế.
+- Sách có ngoại quan đẹp, không móp méo, trầy xước, ố màu, dơ cũ.
+- Khi điền tên trong hệ thống không quá 35 ký tự và không chứa tên miền.
+- Khi một đơn hàng được xuất kho thì cần lưu lại thông tin ngày xuất kho
+ và ngày dự kiến giao hàng.
