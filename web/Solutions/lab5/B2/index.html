@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+        <title>Validator</title>
+        <link rel="stylesheet" href="./style.css">
+	</head>
+
+	<body>
+                <form name="myForm" action="#" onsubmit="validateForm()" method="post">
+                        <label for="fname">First Name: </label>
+                        <input type="text" id="fname">
+                        <br>
+                        <label for="lname">Last Name: </label>
+                        <input type="text" id="lname">
+                        <br>
+                        <label for="email">Email: </label>
+                        <input type="text" id="email">
+                        <br>
+                        <label for="pass">Password: </label>
+                        <input type="password" id="pass">
+                        <br>
+                        <label for="bdate">Birthday:</label>
+                        <input type="date" id="bdate">
+                        <br>
+                        <input type="radio" id="male" name="gender" value="male" checked="true">
+                        <label for="male">Male</label><br>
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female">Female</label><br>
+                        <input type="radio" id="other" name="gender" value="other">
+                        <label for="other">Other</label>
+                        <br>
+                        <label for="country">Country:</label>
+                        <select name="country" id="country">
+                                <option value="vn">Vietname</option>
+                                <option value="au">Australia</option>
+                                <option value="us">United State</option>
+                                <option value="in">India</option>
+                                <option value="or">Other</option>
+                        </select>                   
+                        <br>
+                        <label for="about"></label>
+                        <textarea name="" id="about" cols="30" rows="10">
+                        </textarea>     
+                        <br>
+                        <input type="submit" id="submit">
+                </form>     
+                <button id="reset" onclick="resetAll()">Reset</button>
+                <script src="script.js"></script>
+	</body>
+</html>

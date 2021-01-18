@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>My Page!</title>
+		<style>
+			table, th, td {
+				border: 1px solid black;
+			}
+		
+			.social {
+				padding-left: 5px;
+				padding-right: 5px;
+				border-right: 0.5px solid black;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="./logo.png" style="width:45%;" alt="Your browser doesn't support">
+		<h1>About</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+		dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+		ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+		nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+		id est laborum.</p>
+		<h1>Intro</h1>
+		<video width="320" height="240" controls>
+			<source src="http://techslides.com/demos/sample-videos/small.webm" type="video/mp4">
+ 			Your browser does not support the video tag.
+		</video>
+		<h1>Our Locations</h1>
+		<ul>
+			<li>
+				USA
+				<ul>
+					<li><a href="#">New York</a></li>
+					<li><a href="#">Columbus</a></li>
+					<li><a href="#">Austin</a></li>
+					<li><a href="#">Philly</a></li>
+				</ul>
+			</li>
+			<li>
+				World
+				<ul>
+					<li><a href="#">Ottawa</a></li>
+					<li><a href="#">Sydney</a></li>
+				</ul>
+			</li>
+		</ul>
+		<h1>Upcoming Classes</h1>
+		<table>
+			<tr>
+				<th>Location</th>
+				<th>Topic</th>
+			</tr>
+			<tr>
+				<td>New York</td>
+				<td>JavaScript & jQuery</td>
+			</tr>
+			<tr>
+				<td>Can Francisco</td>
+				<td>HTML & CSS</td>
+			</tr>
+		</table>
+		<h1>Sign Up!</h1>
+		<form action="./#">
+			<label for="fname">Name:</label>
+			<input type="text" id="fname" name="fname"><br><br>
+			<label for="lemail">Email:</label>
+			<input type="text" id="lemail" name="lemail"><br><br>
+			<label>Location:</label>
+			<select>
+				<option>San Francisco</option>
+				<option>New York</option>
+			</select>
+			<fieldset>
+				<legend>Gender:</legend>
+  				<label for="female">Female</label>
+				<input id="female" type="radio" name="gender" value="female">
+  				<label for="male">Male</label>
+				<input id="male" type="radio" name="gender" value="male">
+			</fieldset>
+			<label>Experience:</label><br>
+			<textarea></textarea><br>
+			<button>Sign Up</button><br><br>
+			<a href="#" class="social">Twitter</a>
+			<a href="#" class="social">Facebook</a>
+			<a href="#" class="social" style="border:none;">Flickr</a>
+		</form>
+	</body>
+</html>
